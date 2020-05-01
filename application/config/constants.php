@@ -2,8 +2,8 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 define('HOST_URL', "http://localhost/");
-define('BASE_URL', "http://localhost/honda/");
-define('BASE_THEME', "http://localhost/honda/assets/");
+define('BASE_URL', "http://localhost/ahass/");
+define('BASE_THEME', "http://localhost/ahass/assets/");
 
 /*
 |--------------------------------------------------------------------------
