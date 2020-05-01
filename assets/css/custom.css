@@ -1,0 +1,29 @@
+/**
+ *
+ * You can write your CSS code here, DO NOT touch the default JavaScript file
+ * because it will make it harder for you to update.
+ * 
+ */
+
+/*# sourceMappingURL=custom.css.map */
+
+
+.input-group .form-control:focus{
+    border-color: #E80010;
+}
+
+.input-group .form-control:hover{
+    border-color: #FF5E69;
+}
+
+.form-monitoring .form-control:focus{
+    border-color: #e4e6fc;
+}
+
+.form-monitoring .form-control:hover{
+    border-color: #e4e6fc;
+}
+
+.form-monitoring input[type=text]:disabled{
+    background-color: #fff;
+}
