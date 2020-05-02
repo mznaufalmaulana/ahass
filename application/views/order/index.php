@@ -22,25 +22,19 @@
                             </div>
                         </div>
                     </div>
+                    <div id="message"></div>
                     <div>
                         <div class="table-group">
                             <table class="table" id="list_customer" style="border-collapse: separate !important; font-size:16px !important; ">
                                 <thead syle="font-weight: normal;">
                                     <tr>
-                                        <th>No Order</th>
-                                        <th style="width: 25%">Tanggal Order</th>
-                                        <th>Nama Pelanggan</th>
-                                        <th></th>
+                                        <th style="width: 25%">No Order</th>
+                                        <th style="width: 15%">Tanggal Order</th>
+                                        <th style="width: 35%">Nama Pelanggan</th>
+                                        <th style="width: 25%"></th>
                                     </tr>
                                 </thead>
-                                <tbody syle="font-weight: normal;">
-                                    <tr>
-                                        <th>123-456-789</th>
-                                        <th>22 Juni 2020</th>
-                                        <th>Jony</th>
-                                        <th><a href="<?= BASE_URL . 'Order/detail' ?>" class="btn btn-danger" style="width: 100%;">Detail</a></th>
-                                    </tr>
-                                </tbody>
+                                <tbody syle="font-weight: normal;" id="data_list_customer"></tbody>
                             </table>
                         </div>
                     </div>
@@ -67,7 +61,7 @@
                         <form style="margin-bottom:30px;" enctype="multipart/form-data" action="" name="form-tambah-order">
                             <div class="form-group">
                                 <label class="control-label label-form">Nomor Order</label>
-                                <input type="text" required="required" class="form-control form-modal" name="order_no" id="order_no" placeholder="Masukkan Nomor Order" value="<?= 'ORD' . date("Ymdhis") ?>">
+                                <input type="text" required="required" class="form-control form-modal" name="order_no" id="order_no" placeholder="Masukkan Nomor Order" disabled>
                             </div>
                             <div class="form-group">
                                 <label class="control-label label-form">Nama Pelanggan</label>
@@ -75,45 +69,26 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label label-form">Nomor Telepon</label>
-                                <input maxlength="100" type="text" required="required" class="form-control form-modal" name="telepon_no" id="telepon_no" placeholder="Masukkan Telepon">
+                                <input maxlength="100" type="number" required="required" class="form-control form-modal" name="telepon_no" id="telepon_no" placeholder="Masukkan Telepon">
                             </div>
                             <div class="form-group">
                                 <label class="control-label label-form">Nomor Polisi</label>
-                                <input maxlength="100" type="text" required="required" class="form-control form-modal" name="plat_no" id="plat_no" placeholder="Masukkan Nomor Polisi">
+                                <input maxlength="100" type="text" required="required" class="form-control form-modal" name="plat_no" id="plat_no" placeholder="Masukkan Nomor Polisi, Mis: B 1234 XXX">
                             </div>
                             <div class="form-group">
                                 <label class="control-label label-form">Rekap Kilometer</label>
-                                <input maxlength="100" type="text" required="required" class="form-control form-modal" name="kilometer" id="kilometer" placeholder="Masukkan Kilometer">
+                                <input type="number" min="0" required="required" class="form-control form-modal" name="kilometer" id="kilometer" placeholder="Masukkan Kilometer" oninput="validity.valid||(value='');">
                             </div>
                             <div class="form-group">
                                 <label class="control-label label-form">Jenis Servis</label>
-                                <select name="jenis_servis" id="jenis_servis" class="form-control form-modal">
-                                    <option value="" selected disabled>Pilih Jenis Servis</option>
-                                    <option value="KPB_1">KPB 1</option>
-                                    <option value="KPB_2">KPB 2</option>
-                                    <option value="KPB_3">KPB 3</option>
-                                    <option value="KPB_4">KPB 4</option>
-                                    <option value="Lainnya">Servis Berkala</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label label-form">Jasa / Sparepart</label>
                                 <div class="row">
                                     <div class="col-lg-9">
-                                        <select name="area_edit" id="area_edit" class="form-control form-modal">
+                                        <select name="jenis_servis" id="jenis_servis" class="form-control form-modal">
                                             <option value="" selected disabled>Pilih Jenis / Sparepart</option>
-                                            <option value="Jasa_1">Jasa 1</option>
-                                            <option value="Jasa_2">Jasa 2</option>
-                                            <option value="Jasa_3">Jasa 3</option>
-                                            <option value="Jasa_4">Jasa 4</option>
-                                            <option value="Barang_1">Barang 1</option>
-                                            <option value="Barang_2">Barang 2</option>
-                                            <option value="Barang_3">Barang 3</option>
-                                            <option value="Barang_4">Barang 4</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-2">
-                                        <input type="number" required="required" class="form-control form-modal" name="kilometer" id="kilometer" placeholder="Jumlah" min="0">
+                                        <input type="number" required="required" class="form-control form-modal" name="jumlah" id="jumlah" placeholder="Jumlah" min="0">
                                     </div>
                                     <div class="col-lg-1">
                                         <a href="#" id="tambah-pesanan" class="btn btn-danger"><i class="fas fa-plus"></i></a>
@@ -121,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="form-group float-right">
-                                <a href="#" class="btn btn-danger" id="edit_user" style="width: 140px;">SIMPAN</a>
+                                <a href="#" class="btn btn-danger" id="tambah-order" style="width: 140px;">SIMPAN</a>
                             </div>
                         </form>
                     </div>
@@ -133,6 +108,8 @@
 <!-- End modal tambah order -->
 
 <script>
+    var tgl_mulai_filter;
+    var tgl_akhir_filter;
     $(document).ready(function() {
         $('#filter').daterangepicker({
             autoUpdateInput: false,
@@ -158,7 +135,7 @@
             var month_end = obj_tgl_akhir.getMonth() < 10 ? '0' + (obj_tgl_akhir.getMonth() + 1) : (obj_tgl_akhir.getMonth() + 1);
             tgl_akhir_filter = obj_tgl_akhir.getFullYear() + "-" + month_end + "-" + obj_tgl_akhir.getDate();
             console.log(tgl_akhir_filter);
-            dataTable.ajax.reload();
+            show_data_customer();
         });
 
         $('#filter').on('cancel.daterangepicker', function(ev, picker) {
@@ -166,9 +143,102 @@
 
             tgl_mulai_filter = '';
             tgl_akhir_filter = '';
-            dataTable.ajax.reload();
+            show_data_customer();
         });
-    })
+
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL . "Order/getDataProduk" ?>',
+            // data: data,
+            success: function(data) {
+                var jenis_servis = $('#jenis_servis');
+                var dataJson = $.parseJSON(data);
+                $.each(dataJson, function(key, value) {
+                    jenis_servis.append('<option value="' + value.id + '">' + value.nama_produk + '</option>');
+                });
+            }
+        });
+
+        $('#list_customer').dataTable();
+        $('#list_customer_filter').hide();
+        $('#list_customer_length').hide();
+        show_data_customer();
+    });
+
+    $('#order-number').keyup(function() {
+        show_data_customer();
+    });
+
+    function show_data_customer() {
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL . "Order/getListCustomer" ?>',
+            data: {
+                tgl_mulai: tgl_mulai_filter,
+                tgl_akhir: tgl_akhir_filter,
+                order_no: $('#order-number').val() == '' ? null : $('#order-number').val()
+            },
+            async: true,
+            dataType: 'json',
+            success: function(data) {
+                var html = '';
+                $("#list_customer").dataTable().fnClearTable();
+                for (i = 0; i < data.length; i++) {
+                    var dataCust = [
+                        data[i]['nomor_order'],
+                        tanggalIndonesia(data[i]['tgl_servis']),
+                        data[i]['nama'],
+                        '<a href="<?= BASE_URL . "Order/detail/" ?>' + data[i]['nomor_order'] + '" class="btn btn-danger" style="width: 100%;">Detail</a>'
+                    ]
+                    $("#list_customer").dataTable().fnAddData(dataCust);
+                }
+            }
+
+        });
+    }
+
+    $("#tambah-order").click(function(e) {
+        e.preventDefault();
+
+        var id = $('#order_no').val();
+        var cust_name = $('#cust_name').val();
+        var telepon_no = $('#telepon_no').val();
+        var plat_no = $('#plat_no').val();
+        var kilometer = $('#kilometer').val();
+
+        var tanggal = new Date();
+        var month_custom = tanggal.getMonth() < 10 ? '0' + (tanggal.getMonth() + 1) : (tanggal.getMonth() + 1);
+        var tgl_hari_ini = tanggal.getFullYear() + "-" + month_custom + "-" + (tanggal.getDate());
+
+        $.ajax({
+            type: "POST",
+            url: '<?= BASE_URL . "Order/setDataKustomer" ?>',
+            data: {
+                id: id,
+                cust_name: cust_name,
+                telepon_no: telepon_no,
+                plat_no: plat_no,
+                kilometer: kilometer,
+                tgl_hari_ini: tgl_hari_ini
+            },
+            success: function(data) {
+                $('#message').html(
+                    '<div id="alertFadeOut" class="alert alert-primary alert-dismissible show fadeIn animated" style="width:100% !important; margin-bottom:20px !important;">' +
+                    '<div class="alert-body">' +
+                    '<button class="close" data-dismiss="alert">' +
+                    '<span>&times;</span>' +
+                    '</button>' +
+                    'Data Berhasil Disimpan' +
+                    '</div>' +
+                    '</div>');
+                $("#alertFadeOut").fadeOut(3000);
+                $("#modal-tambah-order").modal("hide");
+                $("form[name='form-tambah-order']")
+                    .closest("form")
+                    .trigger("reset");
+            }
+        });
+    });
 
     function tambahOrder() {
         $("form[name='form-tambah-order']")
@@ -183,4 +253,6 @@
         var order_no = 'ORD' + today.getFullYear() + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes() + today.getSeconds();
         return order_no;
     }
+
+    //# sourceURL=/view/order/list_order.js
 </script>

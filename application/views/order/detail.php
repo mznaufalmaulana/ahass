@@ -13,27 +13,23 @@
                         <div class="col-lg-6">
                             <div class="card-text" style="margin-bottom: 10px;">
                                 Nomor Order
-                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="outlet_detail">ORD202019192882</span></div>
+                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="outlet_detail"><?= $dataKustomer[0]->nomor_order ?></span></div>
                             </div>
                             <div class="card-text" style="margin-bottom: 10px;">
                                 Nama
-                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="outlet_detail">Mat Bayan</span></div>
+                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span class="text-capitalize" id="outlet_detail"><?= $dataKustomer[0]->nama ?></span></div>
                             </div>
                             <div class="card-text" style="margin-bottom: 10px;">
                                 Nomor Telepon
-                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail">0878566666666</span></div>
+                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail"><?= $dataKustomer[0]->telepon ?></span></div>
                             </div>
                             <div class="card-text" style="margin-bottom: 10px;">
                                 Nomor Polisi
-                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail">M 5252 AAE</span></div>
+                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span class="text-uppercase" id="username_detail"><?= $dataKustomer[0]->nomor_polisi ?></span></div>
                             </div>
                             <div class="card-text" style="margin-bottom: 10px;">
                                 Kilometer
-                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail">39.900 Km</span></div>
-                            </div>
-                            <div class="card-text" style="margin-bottom: 10px;">
-                                Jenis Service
-                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail">KPB 3</span></div>
+                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail"><?= ribuan($dataKustomer[0]->total_km) ?> Km</span></div>
                             </div>
                         </div>
                         <div class="col-lg-3"></div>
@@ -43,17 +39,48 @@
                             <table class="table" id="list_customer" style="border-collapse: separate !important; font-size:16px !important; ">
                                 <thead syle="font-weight: normal;">
                                     <tr>
-                                        <th>No Order</th>
-                                        <th style="width: 25%">Tanggal Order</th>
-                                        <th>Nama Pelanggan</th>
-                                        <th></th>
+                                        <th class="text-center" style="width: 5%">No</th>
+                                        <th style="width: 25%">Jenis Service</th>
+                                        <th style="width: 25%">Proses</th>
+                                        <th style="width: 25%">Status</th>
+                                        <th style="width: 20%"></th>
                                     </tr>
                                 </thead>
                                 <tbody syle="font-weight: normal;">
                                     <tr>
-                                        <th>123-456-789</th>
-                                        <th>22 Juni 2020</th>
-                                        <th>Jony</th>
+                                        <th class="text-center">1</th>
+                                        <th>Tambah Oli</th>
+                                        <th>
+                                            <div class="progress" data-height="4" data-toggle="tooltip" title="50%">
+                                                <div class="progress-bar bg-warning" role="progressbar" data-width="50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="text-warning">Sedang dikerjakan</th>
+                                        <th><a href="#" class="btn btn-danger" style="width: 100%;">Detail</a></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">1</th>
+                                        <th>Tambah Oli</th>
+                                        <th>
+                                            <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
+                                                <div class="progress-bar bg-danger" role="progressbar" data-width="0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="text-danger">Dalam antrian</th>
+                                        <th><a href="#" class="btn btn-danger" style="width: 100%;">Detail</a></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">1</th>
+                                        <th>Tambah Oli</th>
+                                        <th>
+                                            <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
+                                                <div class="progress-bar bg-success" role="progressbar" data-width="100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="text-success">Selesai</th>
                                         <th><a href="#" class="btn btn-danger" style="width: 100%;">Detail</a></th>
                                     </tr>
                                 </tbody>
