@@ -21,7 +21,7 @@
                             </div>
                             <div class="card-text" style="margin-bottom: 10px;">
                                 Nomor Telepon
-                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail"><?= $dataKustomer[0]->telepon ?></span></div>
+                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail">+62 <?= $dataKustomer[0]->telepon ?></span></div>
                             </div>
                             <div class="card-text" style="margin-bottom: 10px;">
                                 Nomor Polisi

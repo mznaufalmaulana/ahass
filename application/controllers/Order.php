@@ -68,10 +68,22 @@ class Order extends CI_Controller
     {
         $this->db->select('*');
         $this->db->from('produk');
+        $this->db->orderBy('nama_produk');
 
         $dataProduk = $this->db->get()->result();
 
         echo json_encode($dataProduk);
+    }
+
+    public function getDataHarga($id)
+    {
+        $this->db->select('harga');
+        $this->db->from('produk');
+        $this->db->where('id', $id);
+
+        $dataHarga = $this->db->get()->result();
+
+        echo json_encode($dataHarga);
     }
 
     public function setDataKustomer()
