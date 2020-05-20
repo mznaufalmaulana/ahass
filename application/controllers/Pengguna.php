@@ -24,4 +24,61 @@ class Pengguna extends CI_Controller
         $this->load->view('pengguna/index', $data);
         $this->load->view('templates/footer');
     }
+
+    // mengambil daftar pengguna
+    public function getListPengguna()
+    {
+        $nama_pengguna = $this->input->post('nama_pengguna');
+        $role = $this->input->post('role');
+
+        $this->db->select('fullname, username, role');
+        $this->db->from('user');
+
+        if (strlen($nama_pengguna) != 0) {
+            $this->db->like('fullname', $nama_pengguna);
+        }
+        if (strlen($role) != 0) {
+            $this->db->where('role', $role);
+        }
+
+        $dataPengguna = $this->db->get()->result();
+
+        echo json_encode($dataPengguna);
+    }
+
+    // cek username
+    public function checkUsername()
+    {
+        $this->db->select('fullname, username, role');
+        $this->db->where('username', $this->input->post('username'));
+        $this->db->from('user');
+        $query = $this->db->get()->result();
+        if ($query) {
+            $response_array['status'] = 'error';
+        } else {
+            $response_array['status'] = 'success';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // menyimpan data pengguna
+    public function setDataPengguna()
+    {
+        $data = [
+            "username" => $this->input->post('username'),
+            "fullname" => $this->input->post('fullname'),
+            "password" => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+            "role" => $this->input->post('role')
+        ];
+
+        $query = $this->db->insert('user', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
 }

@@ -15,11 +15,13 @@
                             </div>
                             <input type="text" id="order-number" class="form-control" style="width:20%" placeholder="Cari Nomor Order">
                             <input placeholder="Pilih Tanggal" type="text" id="filter" class="form-control filter">
-                            <div class="btn float-right">
-                                <a href="#" class="btn btn-danger" onclick="tambahOrder()">
-                                    Tambah Order
-                                </a>
-                            </div>
+                            <?php if ($_SESSION['role'] == 'kasir') { ?>
+                                <div class="btn float-right">
+                                    <a href="#" class="btn btn-danger" onclick="tambahOrder()">
+                                        Tambah Order
+                                    </a>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
                     <div id="message"></div>
@@ -81,13 +83,17 @@
                                 <input type="number" min="0" required="required" class="form-control form-modal" name="kilometer" id="kilometer" placeholder="Masukkan Kilometer" oninput="validity.valid||(value='');">
                             </div>
                             <div class="form-group">
+                                <label class="control-label label-form">Catatan untuk Montir</label>
+                                <textarea class="form-control form-modal" name="catatan" id="catatan" style="resize: none"></textarea>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label label-form">Jenis Servis</label>
                                 <div class="row">
                                     <div class="col-lg-9">
                                         <select name="jenis_servis" id="jenis_servis" class="form-control form-modal">
                                             <option value="" selected disabled>Pilih Jenis / Sparepart</option>
                                         </select>
-                                        <input type="text" id="harga-servis">
+                                        <input type="text" id="harga-servis" hidden>
                                         <div id="data-ada"></div>
                                     </div>
                                     <div class="col-lg-2">
@@ -124,6 +130,8 @@
     var indexServis = 0;
     var dataPesanan = new Array;
     $(document).ready(function() {
+
+        // Filtering Tanggal
         $('#filter').daterangepicker({
             autoUpdateInput: false,
             locale: {
@@ -159,6 +167,7 @@
             show_data_customer();
         });
 
+        // menampilkan data produk
         $.ajax({
             type: 'POST',
             url: '<?= BASE_URL . "Order/getDataProduk" ?>',
@@ -172,12 +181,19 @@
             }
         });
 
+        // membuat datatable order
         $('#list_customer').dataTable();
         $('#list_customer_filter').hide();
         $('#list_customer_length').hide();
         show_data_customer();
     });
 
+    tinymce.init({
+        selector: '#catatan',
+        menubar: false
+    });
+
+    // cek harga jasa servis
     $('#jenis_servis').change(function() {
         idServis = $('#jenis_servis').val();
         $.ajax({
@@ -193,10 +209,12 @@
         });
     });
 
+    // fitur pencarian nomor order
     $('#order-number').keyup(function() {
         show_data_customer();
     });
 
+    // menampilkan data customer
     function show_data_customer() {
         $.ajax({
             type: 'POST',
@@ -225,6 +243,7 @@
         });
     }
 
+    // melakukan tambah order
     $("#tambah-order").click(function(e) {
         e.preventDefault();
 
@@ -233,6 +252,7 @@
         var telepon_no = $('#telepon_no').val();
         var plat_no = $('#plat_no').val();
         var kilometer = $('#kilometer').val();
+        var catatan = tinymce.get('catatan').getContent();
 
         var tanggal = new Date();
         var month_custom = tanggal.getMonth() < 10 ? '0' + (tanggal.getMonth() + 1) : (tanggal.getMonth() + 1);
@@ -273,24 +293,48 @@
                     telepon_no: telepon_no,
                     plat_no: plat_no,
                     kilometer: kilometer,
+                    catatan: catatan,
                     tgl_hari_ini: tgl_hari_ini
                 },
                 success: function(data) {
-                    $('#message').html(
-                        '<div id="alertFadeOut" class="alert alert-primary alert-dismissible show fadeIn animated" style="width:100% !important; margin-bottom:20px !important;">' +
-                        '<div class="alert-body">' +
-                        '<button class="close" data-dismiss="alert">' +
-                        '<span>&times;</span>' +
-                        '</button>' +
-                        'Data Berhasil Disimpan' +
-                        '</div>' +
-                        '</div>');
-                    $("#alertFadeOut").fadeOut(5000);
-                    $("#modal-tambah-order").modal("hide");
-                    $("form[name='form-tambah-order']")
-                        .closest("form")
-                        .trigger("reset");
-                    show_data_customer();
+                    for (var index = 0; index < dataPesanan.length; index++) {
+                        if (dataPesanan[index]['id_produk'] == null) {
+                            continue;
+                        }
+                        var id_produk = dataPesanan[index]['id_produk'];
+                        var jumlah = dataPesanan[index]['jumlah'];
+                        var total_harga = dataPesanan[index]['total_harga'];
+                        var status = dataPesanan[index]['status'];
+                        $.ajax({
+                            type: "POST",
+                            url: '<?= BASE_URL . "Order/setDataPesanan" ?>',
+                            data: {
+                                "nomor_order": id,
+                                "id_produk": id_produk,
+                                "jumlah": jumlah,
+                                "total_harga": total_harga,
+                                "status": status,
+                                "tgl_hari_ini": tgl_hari_ini
+                            },
+                            success: function(data) {
+                                $('#message').html(
+                                    '<div id="alertFadeOut" class="alert alert-primary alert-dismissible show fadeIn animated" style="width:100% !important; margin-bottom:20px !important;">' +
+                                    '<div class="alert-body">' +
+                                    '<button class="close" data-dismiss="alert">' +
+                                    '<span>&times;</span>' +
+                                    '</button>' +
+                                    'Data Berhasil Disimpan' +
+                                    '</div>' +
+                                    '</div>');
+                                $("#alertFadeOut").fadeOut(5000);
+                                $("#modal-tambah-order").modal("hide");
+                                $("form[name='form-tambah-order']")
+                                    .closest("form")
+                                    .trigger("reset");
+                                show_data_customer();
+                            }
+                        })
+                    }
                 }
             });
         } else {
@@ -318,25 +362,29 @@
         $("#modal-tambah-order").modal("show");
         for (var index = 0; index < dataPesanan.length; index++) {
             delete_servis(index);
-
         }
     }
 
+    // generate Nomor Order
     function getOrderId() {
         var today = new Date();
         var order_no = 'ORD' + today.getFullYear() + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes() + today.getSeconds();
         return order_no;
     }
 
+    // menambahkan data pesanan
     $('#tambah-pesanan').on('click', function(e) {
         var jenisServis = $('#jenis_servis').val();
 
         var txtServis = $("#jenis_servis option:selected").text();
         var jumlah = $("#jumlah").val();
 
+        var totalHarga = jumlah * $("#harga-servis").val();
+
         var value = {
             "id_produk": jenisServis,
             "jumlah": jumlah,
+            "total_harga": totalHarga,
             "status": 0
         }
 
@@ -366,6 +414,7 @@
         }
     })
 
+    // menghapus data pesanan
     function delete_servis(index) {
         var value = {
             "id_produk": null,

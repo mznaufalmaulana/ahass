@@ -41,6 +41,7 @@ class Order extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    // mengambil daftar pelanggan
     public function getListCustomer()
     {
         $order_no = $this->input->post('order_no');
@@ -58,23 +59,27 @@ class Order extends CI_Controller
         if (strlen($tgl_akhir) != 0) {
             $this->db->where('tgl_servis <=', $tgl_akhir);
         }
+        $this->db->where('status', 0);
 
         $dataKustomer = $this->db->get()->result();
 
         echo json_encode($dataKustomer);
     }
 
+    // mengambil data produk
     public function getDataProduk()
     {
         $this->db->select('*');
         $this->db->from('produk');
-        $this->db->orderBy('nama_produk');
+
+        $this->db->order_by('nama_produk', 'asc');
 
         $dataProduk = $this->db->get()->result();
 
         echo json_encode($dataProduk);
     }
 
+    // mengambil data harga produk
     public function getDataHarga($id)
     {
         $this->db->select('harga');
@@ -86,6 +91,7 @@ class Order extends CI_Controller
         echo json_encode($dataHarga);
     }
 
+    // menyimpan data pelanggan
     public function setDataKustomer()
     {
         $data = [
@@ -94,7 +100,9 @@ class Order extends CI_Controller
             'telepon' => htmlspecialchars($this->input->post('telepon_no'), true),
             'nomor_polisi' => htmlspecialchars($this->input->post('plat_no'), true),
             'total_km' => htmlspecialchars($this->input->post('kilometer'), true),
-            'tgl_servis' => htmlspecialchars($this->input->post('tgl_hari_ini'), true)
+            'catatan' => $this->input->post('catatan'),
+            'tgl_servis' => htmlspecialchars($this->input->post('tgl_hari_ini'), true),
+            'status' => 0,
         ];
 
         $query = $this->db->insert('data_kustomer', $data);
@@ -105,5 +113,79 @@ class Order extends CI_Controller
         }
 
         echo json_encode($response_array);
+    }
+
+    // menyimpan data pesanan
+    public function setDataPesanan()
+    {
+        $data = [
+            "nomor_order" => $this->input->post('nomor_order'),
+            "id_produk" => $this->input->post('id_produk'),
+            "jumlah" => $this->input->post('jumlah'),
+            "total_harga" => $this->input->post('total_harga'),
+            "status" => $this->input->post('status'),
+            'tanggal_pembelian' => $this->input->post('tgl_hari_ini')
+        ];
+
+        $query = $this->db->insert('data_pesanan', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // update data pesanan
+    public function setProses()
+    {
+        $data = [
+            "status" => $this->input->post('status'),
+        ];
+
+        $this->db->where('nomor_order', $this->input->post('nomor_order'));
+        $this->db->where('id_produk', $this->input->post('id_produk'));
+        $query = $this->db->update('data_pesanan', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // update data pesanan
+    public function setProsesSelesai()
+    {
+        $data = [
+            "status" => $this->input->post('status'),
+        ];
+
+        $this->db->where('nomor_order', $this->input->post('nomor_order'));
+        $query = $this->db->update('data_kustomer', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // mengambil data pesanan
+    public function getListPesanan()
+    {
+        $this->db->select('*');
+        $this->db->from('data_pesanan dp');
+        $this->db->join('produk p', 'dp.id_produk = p.id');
+        $this->db->where('nomor_order', $this->input->post('nomor_order'));
+
+        $this->db->order_by('nama_produk');
+
+        $dataPesanan = $this->db->get()->result();
+
+        echo json_encode($dataPesanan);
     }
 }

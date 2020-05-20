@@ -46,10 +46,10 @@
 
                         <div class="card card-danger">
                             <div class="card-body">
-                                <form method="POST" action="#" class="needs-validation" novalidate="">
+                                <form method="POST" action="<?= BASE_URL . 'customer/' ?>" class="needs-validation" novalidate="">
                                     <div class="form-group">
                                         <label for="Username">No. Order</label>
-                                        <input id="order_no" type="text" class="form-control" name="Username" tabindex="1" required autofocus>
+                                        <input id="order_no" type="text" class="form-control" name="order_no" tabindex="1" required autofocus>
                                         <div class="invalid-feedback">
                                             Please fill in your order no.
                                         </div>

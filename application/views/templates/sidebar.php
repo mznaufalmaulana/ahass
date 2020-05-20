@@ -31,24 +31,34 @@
                   </div>
                   <ul class="sidebar-menu">
                       <li class="menu-header">Menu</li>
-                      <li class="dropdown">
-                          <a href="<?= BASE_URL . 'Order' ?>" class="nav-link"><i class="fas fa-list-ul"></i><span>Order</span></a>
-                      </li>
                   </ul>
-                  <ul class="sidebar-menu">
-                      <li class="dropdown">
-                          <a href="<?= BASE_URL . 'Riwayat' ?>" class="nav-link"><i class="fas fa-history"></i><span>Riwayat</span></a>
-                      </li>
-                  </ul>
-                  <ul class="sidebar-menu">
-                      <li class="dropdown">
-                          <a href="<?= BASE_URL . 'Pengguna' ?>" class="nav-link"><i class="fas fa-users"></i><span>Pengguna</span></a>
-                      </li>
-                  </ul>
-                  <ul class="sidebar-menu">
-                      <li class="dropdown">
-                          <a href="<?= BASE_URL . 'Laporan' ?>" class="nav-link"><i class="fas fa-file-alt"></i><span>Laporan Penjualan</span></a>
-                      </li>
-                  </ul>
+                  <?php if ($_SESSION['role'] == 'montir' || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'kasir') { ?>
+                      <ul class="sidebar-menu">
+                          <li class="dropdown">
+                              <a href="<?= BASE_URL . 'Order' ?>" class="nav-link"><i class="fas fa-list-ul"></i><span>Order</span></a>
+                          </li>
+                      </ul>
+                  <?php } ?>
+                  <?php if ($_SESSION['role'] == 'montir' || $_SESSION['role'] == 'admin' || $_SESSION['role'] == 'kasir') { ?>
+                      <ul class="sidebar-menu">
+                          <li class="dropdown">
+                              <a href="<?= BASE_URL . 'Riwayat' ?>" class="nav-link"><i class="fas fa-history"></i><span>Riwayat</span></a>
+                          </li>
+                      </ul>
+                  <?php } ?>
+                  <?php if ($_SESSION['role'] == 'admin') { ?>
+                      <ul class="sidebar-menu">
+                          <li class="dropdown">
+                              <a href="<?= BASE_URL . 'Pengguna' ?>" class="nav-link"><i class="fas fa-users"></i><span>Pengguna</span></a>
+                          </li>
+                      </ul>
+                  <?php } ?>
+                  <?php if ($_SESSION['role'] == 'manager' || $_SESSION['role'] == 'admin') { ?>
+                      <ul class="sidebar-menu">
+                          <li class="dropdown">
+                              <a href="<?= BASE_URL . 'Laporan' ?>" class="nav-link"><i class="fas fa-file-alt"></i><span>Laporan Penjualan</span></a>
+                          </li>
+                      </ul>
+                  <?php } ?>
               </aside>
           </div>

@@ -39,15 +39,18 @@ class Auth extends CI_Controller
             if (password_verify($password, $user['password'])) {
                 $data = [
                     'id' => $user['id'],
-                    'username' => $user['username']
+                    'username' => $user['username'],
+                    'role' => $user['role']
                 ];
                 $this->session->set_userdata($data);
                 if ($user['role'] == 'admin') {
                     redirect('Order');
-                } else if ($user['role'] == 2) {
-                    redirect('User');
-                } else if ($user['role'] == 3) {
-                    redirect('Surveyor');
+                } else if ($user['role'] == 'montir') {
+                    redirect('Order');
+                } else if ($user['role'] == 'kasir') {
+                    redirect('Order');
+                } else if ($user['role'] == 'manager') {
+                    redirect('Laporan');
                 }
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Maaf! Kata Sandi Salah </div>');
