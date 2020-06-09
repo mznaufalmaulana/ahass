@@ -48,7 +48,7 @@
 
 
 <!-- Modal tambah order -->
-<div class="modal fade" id="modal-tambah-order" role="dialog">
+<div class="modal fade" id="modal-tambah-order" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,7 +90,7 @@
                                 <label class="control-label label-form">Jenis Servis</label>
                                 <div class="row">
                                     <div class="col-lg-9">
-                                        <select name="jenis_servis" id="jenis_servis" class="form-control form-modal">
+                                        <select name="jenis" id="jenis_servis" class="form-control" style="width:100%;">
                                             <option value="" selected disabled>Pilih Jenis / Sparepart</option>
                                         </select>
                                         <input type="text" id="harga-servis" hidden>
@@ -171,7 +171,6 @@
         $.ajax({
             type: 'POST',
             url: '<?= BASE_URL . "Order/getDataProduk" ?>',
-            // data: data,
             success: function(data) {
                 var jenis_servis = $('#jenis_servis');
                 var dataJson = $.parseJSON(data);
@@ -202,8 +201,6 @@
             dataType: 'json',
             // data: data,
             success: function(data) {
-                console.log(data);
-
                 $('#harga-servis').val(data[0]['harga']);
             }
         });

@@ -8,14 +8,16 @@
     <title>AHASS 669 | PT Astra Honda Motor</title>
 
     <!-- General CSS Files -->
-    <link rel="stylesheet" href="<?= BASE_THEME . '/modules/bootstrap/css/bootstrap.min' ?>.css">
-    <link rel="stylesheet" href="<?= BASE_THEME . '/modules/fontawesome/css/all.min' ?>.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
+    <link rel="stylesheet" href="<?= BASE_THEME . '/modules/bootstrap/css/bootstrap.css' ?>">
+    <link rel="stylesheet" href="<?= BASE_THEME . '/modules/fontawesome/css/all.min.css' ?>">
 
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="<?= BASE_THEME . '/modules/select2/dist/css/select2.min.css' ?>">
 
     <!-- Template CSS -->
-    <link rel="stylesheet" href="<?= BASE_THEME . '/css/style' ?>.css">
-    <link rel="stylesheet" href="<?= BASE_THEME . '/css/components' ?>.css">
+    <link rel="stylesheet" href="<?= BASE_THEME . '/css/style.css' ?>">
+    <link rel="stylesheet" href="<?= BASE_THEME . '/css/components.css' ?>">
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script>
@@ -46,6 +48,10 @@
 
     <!-- tinyMCE -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- select2 -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
 
 </head>
 

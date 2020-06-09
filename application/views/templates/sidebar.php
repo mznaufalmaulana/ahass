@@ -46,10 +46,24 @@
                           </li>
                       </ul>
                   <?php } ?>
+                  <?php if ($_SESSION['role'] == 'kasir') { ?>
+                      <ul class="sidebar-menu">
+                          <li class="dropdown">
+                              <a href="<?= BASE_URL . 'Validasi' ?>" class="nav-link"><i class="fas fa-check"></i><span>Validasi Penjualan</span></a>
+                          </li>
+                      </ul>
+                  <?php } ?>
                   <?php if ($_SESSION['role'] == 'admin') { ?>
                       <ul class="sidebar-menu">
                           <li class="dropdown">
                               <a href="<?= BASE_URL . 'Pengguna' ?>" class="nav-link"><i class="fas fa-users"></i><span>Pengguna</span></a>
+                          </li>
+                      </ul>
+                  <?php } ?>
+                  <?php if ($_SESSION['role'] == 'admin') { ?>
+                      <ul class="sidebar-menu">
+                          <li class="dropdown">
+                              <a href="<?= BASE_URL . 'Produk' ?>" class="nav-link"><i class="fas fa-users"></i><span>Produk</span></a>
                           </li>
                       </ul>
                   <?php } ?>

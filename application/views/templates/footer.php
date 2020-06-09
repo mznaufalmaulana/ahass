@@ -80,6 +80,17 @@
 
         return tampilTanggal;
     }
+
+    // UUID
+    function create_UUID() {
+        var dt = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (dt + Math.random() * 16) % 16 | 0;
+            dt = Math.floor(dt / 16);
+            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+        return uuid;
+    }
 </script>
 
 <!-- General JS Scripts -->
@@ -89,6 +100,7 @@
 <script src="<?= BASE_THEME . '/modules/nicescroll/jquery.nicescroll.min.js' ?>"></script>
 <script src="<?= BASE_THEME . '/modules/moment.min.js' ?>"></script>
 <script src="<?= BASE_THEME . '/js/stisla.js' ?>"></script>
+<script src="<?= BASE_THEME . '/modules/select2/dist/js/select2.full.min.js' ?>"></script>
 
 <!-- datatables -->
 <script src="<?= BASE_THEME . '/modules/datatables/datatables.min.js' ?>"></script>
@@ -96,6 +108,7 @@
 <!-- JS Libraies -->
 
 <!-- Page Specific JS File -->
+<script src="<?= BASE_THEME . '/js/page/index.js' ?>"></script>
 
 <!-- Template JS File -->
 <script src="<?= BASE_THEME . '/js/scripts.js' ?>"></script>

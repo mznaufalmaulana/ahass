@@ -102,6 +102,7 @@
 
 <script>
     $(document).ready(function() {
+        // $("#role").select2();
         // membuat datatable order
         $('#list_pengguna').dataTable();
         $('#list_pengguna_filter').hide();
