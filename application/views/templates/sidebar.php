@@ -63,7 +63,7 @@
                   <?php if ($_SESSION['role'] == 'admin') { ?>
                       <ul class="sidebar-menu">
                           <li class="dropdown">
-                              <a href="<?= BASE_URL . 'Produk' ?>" class="nav-link"><i class="fas fa-users"></i><span>Produk</span></a>
+                              <a href="<?= BASE_URL . 'Produk' ?>" class="nav-link"><i class="fas fa-hdd"></i><span>Produk</span></a>
                           </li>
                       </ul>
                   <?php } ?>

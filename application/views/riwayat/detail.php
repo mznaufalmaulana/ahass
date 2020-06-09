@@ -46,7 +46,7 @@
                             <?php if ($_SESSION['role'] == 'admin') { ?>
                                 <div class="btn float-right" style="width: 100%; margin-bottom: 20px">
                                     <a href="<?= BASE_URL . 'riwayat' ?>" class="btn btn-danger btn-block" id="finish-button">
-                                        Selesai
+                                        Kembali
                                     </a>
                                 </div>
                             <?php } ?>
