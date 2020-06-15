@@ -36,7 +36,7 @@
                                         <th style="width: 5%;">No</th>
                                         <th>Nama Pengguna</th>
                                         <th style="width: 20%;">Role</th>
-                                        <!-- <th style="width: 20%;"></th> -->
+                                        <th style="width: 20%;"></th>
                                     </tr>
                                 </thead>
                                 <tbody syle="font-weight: normal;">
@@ -100,6 +100,85 @@
 </div>
 <!-- End modal tambah order -->
 
+<!-- Modal tambah order -->
+<div class="modal fade" id="modal-edit-order" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="message-error"></div>
+                        <form style="margin-bottom:30px;" enctype="multipart/form-data" action="" name="form-edit-order">
+                            <input maxlength="100" type="text" required="required" class="form-control form-modal" name="id_edit" id="id_edit" placeholder="Masukkan Nama Pengguna" hidden>
+                            <div class="form-group">
+                                <label class="control-label label-form">Nama Pengguna</label>
+                                <input maxlength="100" type="text" required="required" class="form-control form-modal" name="fullname_edit" id="fullname_edit" placeholder="Masukkan Nama Pengguna">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label label-form">Peran Pengguna</label>
+                                <select class="form-control" id="role_edit">
+                                    <option value="" selected disabled>Pilih Peran</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="kasir">Kasir</option>
+                                    <option value="montir">Montir</option>
+                                    <option value="manager">Manager</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label label-form">Username</label>
+                                <input maxlength="100" type="text" required="required" class="form-control form-modal" name="username_edit" id="username_edit" placeholder="Masukkan Username">
+                                <span class="float-left" style="font-size: 10px;" id="pesan_username"></span>
+                            </div>
+                            <div class="form-group float-right">
+                                <a href="#" class="btn btn-danger" id="edit-penguna" style="width: 140px;">SIMPAN</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- End modal tambah order -->
+
+<!-- Modal tambah order -->
+<div class="modal fade" id="modal-hapus-order" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hapus Pengguna</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="message-error"></div>
+                        <form style="margin-bottom:30px;" enctype="multipart/form-data" action="" name="form-hapus-order">
+                            <input maxlength="100" type="text" required="required" class="form-control form-modal" name="id_hapus" id="id_hapus" placeholder="Masukkan Nama Pengguna" hidden>
+                            <div class="form-group">
+                                <h3>Apakah Anda Yakin?</h3>
+                            </div>
+                            <div class="form-group float-right">
+                                <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" style="width: 140px;">TIDAK</a>
+                                <a href="#" class="btn btn-danger" id="hapus-penguna" style="width: 140px;">YA</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- End modal tambah order -->
+
 <script>
     $(document).ready(function() {
         // $("#role").select2();
@@ -138,12 +217,45 @@
                         nomor++,
                         data[i]['fullname'],
                         data[i]['role'],
-                        // '<a href="<?= BASE_URL . "Order/detail/" ?>' + data[i]['nomor_order'] + '" class="btn btn-danger" style="width: 100%;">Detail</a>'
+                        '<a href="#" onclick="editUser('+ data[i]['id'] +')" class="btn btn-warning" style="margin-right: 10px;">Edit</a>' +
+                        '<a href="#" onclick="hapusUser('+ data[i]['id'] +')" class="btn btn-danger">Hapus</a>'
                     ]
                     $("#list_pengguna").dataTable().fnAddData(dataCust);
                 }
             }
         });
+    }
+
+    function editUser(id) {
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL . "Pengguna/getDetailPengguna" ?>',
+            data: {
+                id: id,
+            },
+            async: true,
+            dataType: 'json',
+            success: function(data) {
+                $("form[name='form-edit-order']")
+                    .closest("form")
+                    .trigger("reset");
+
+                $("#id_edit").val(data[0]['id']);
+                $("#fullname_edit").val(data[0]['fullname']);
+                $("#username_edit").val(data[0]['username']);
+                $("#role_edit option[value='" + data[0]['role'] + "']").attr("selected", true);
+
+                $("#modal-edit-order").modal("show");
+            }
+        });
+    }
+
+    function hapusUser(id) {
+        $("form[name='form-hapus-order']")
+            .closest("form")
+            .trigger("reset");
+        $("#id_hapus").val(id);
+        $("#modal-hapus-order").modal("show");
     }
 
     // fitur pencarian nomor order
@@ -230,4 +342,110 @@
             $("#alertFadeOut").fadeOut(5000);
         }
     });
+
+    // melakukan tambah penguna
+    $("#edit-penguna").click(function(e) {
+        e.preventDefault();
+
+        var id = $('#id_edit').val();
+        var fullname = $('#fullname_edit').val();
+        var role = $('#role_edit').val();
+        var username = $('#username_edit').val();
+
+        if (fullname && role_tambah && username) {
+
+            $.ajax({
+                type: "POST",
+                url: '<?= BASE_URL . "Pengguna/setDataEditPengguna" ?>',
+                data: {
+                    id: id,
+                    fullname: fullname,
+                    role: role,
+                    username: username
+                },
+                success: function(data) {
+                    $('#message').html(
+                        '<div id="alertFadeOut" class="alert alert-primary alert-dismissible show fadeIn animated" style="width:100% !important; margin-bottom:20px !important;">' +
+                        '<div class="alert-body">' +
+                        '<button class="close" data-dismiss="alert">' +
+                        '<span>&times;</span>' +
+                        '</button>' +
+                        'Data Berhasil Disimpan' +
+                        '</div>' +
+                        '</div>');
+                    $("#alertFadeOut").fadeOut(5000);
+                    $("#modal-edit-order").modal("hide");
+                    $("form[name='form-edit-order']")
+                        .closest("form")
+                        .trigger("reset");
+                    show_data_user();
+                }
+            });
+        } else {
+            $('#message-error').html(
+                '<div id="alertFadeOut" class="alert alert-danger alert-dismissible show fadeIn animated" style="width:100% !important; margin-bottom:20px !important;">' +
+                '<div class="alert-body">' +
+                '<button class="close" data-dismiss="alert">' +
+                '<span>&times;</span>' +
+                '</button>' +
+                'Mohon lengkapi data Anda' +
+                '</div>' +
+                '</div>');
+            $('#modal-edit-order').animate({
+                scrollTop: 0
+            }, 'slow');
+            $("#alertFadeOut").fadeOut(5000);
+        }
+    });
+
+    // melakukan tambah penguna
+    $("#hapus-penguna").click(function(e) {
+        e.preventDefault();
+
+        var id = $('#id_hapus').val();
+
+        if (id) {
+
+            $.ajax({
+                type: "POST",
+                url: '<?= BASE_URL . "Pengguna/deleteDataPengguna" ?>',
+                data: {
+                    id: id,
+                },
+                success: function(data) {
+                    $('#message').html(
+                        '<div id="alertFadeOut" class="alert alert-primary alert-dismissible show fadeIn animated" style="width:100% !important; margin-bottom:20px !important;">' +
+                        '<div class="alert-body">' +
+                        '<button class="close" data-dismiss="alert">' +
+                        '<span>&times;</span>' +
+                        '</button>' +
+                        'Data Berhasil Disimpan' +
+                        '</div>' +
+                        '</div>');
+                    $("#alertFadeOut").fadeOut(5000);
+                    $("#modal-hapus-order").modal("hide");
+                    $("form[name='form-hapus-order']")
+                        .closest("form")
+                        .trigger("reset");
+                    show_data_user();
+                }
+            });
+        } else {
+            $('#message-error').html(
+                '<div id="alertFadeOut" class="alert alert-danger alert-dismissible show fadeIn animated" style="width:100% !important; margin-bottom:20px !important;">' +
+                '<div class="alert-body">' +
+                '<button class="close" data-dismiss="alert">' +
+                '<span>&times;</span>' +
+                '</button>' +
+                'Mohon lengkapi data Anda' +
+                '</div>' +
+                '</div>');
+            $('#modal-hapus-order').animate({
+                scrollTop: 0
+            }, 'slow');
+            $("#alertFadeOut").fadeOut(5000);
+        }
+    });
+
+    //# sourceURL=/view/ahass/user.js
 </script>

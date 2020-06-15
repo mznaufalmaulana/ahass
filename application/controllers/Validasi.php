@@ -17,7 +17,7 @@ class Validasi extends CI_Controller
 
     public function index()
     {
-        $data['judul'] = "Validasi Penjualan";
+        $data['judul'] = "Hasil Penjualan";
 
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
@@ -93,6 +93,26 @@ class Validasi extends CI_Controller
 
         $data = [
             "status" => '3'
+        ];
+
+        $this->db->where('tanggal_pembelian', $tanggal);
+        $query = $this->db->update('data_pesanan', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // mengambil daftar pelanggan
+    public function setValidasiDataLaporanManager()
+    {
+        $tanggal = $this->input->post('tanggal');
+
+        $data = [
+            "status" => '4'
         ];
 
         $this->db->where('tanggal_pembelian', $tanggal);

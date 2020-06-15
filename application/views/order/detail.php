@@ -59,7 +59,7 @@
                     <div id="message"></div>
                     <div>
                         <div class="table-group">
-                            <?php if ($_SESSION['role'] == 'admin') { ?>
+                            <?php if ($_SESSION['role'] == 'kasir') { ?>
                                 <table class="table" id="list_pesanan" style="border-collapse: separate !important; font-size:16px !important; ">
                                 <?php } else { ?>
                                     <table class="table" id="list_pesanan_montir" style="border-collapse: separate !important; font-size:16px !important; ">
@@ -181,16 +181,16 @@
         var button;
         var role = '<?= $this->session->userdata["role"] ?>';
 
-        if (role == 'montir') {
-            $.ajax({
-                type: 'POST',
-                url: '<?= BASE_URL . "Order/getListPesanan" ?>',
-                data: {
-                    nomor_order: '<?= $dataKustomer[0]->nomor_order ?>'
-                },
-                async: true,
-                dataType: 'json',
-                success: function(data) {
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL . "Order/getListPesanan" ?>',
+            data: {
+                nomor_order: '<?= $dataKustomer[0]->nomor_order ?>'
+            },
+            async: true,
+            dataType: 'json',
+            success: function(data) {
+                if (role == 'montir') {
                     var html = '';
                     $("#list_pesanan_montir").dataTable().fnClearTable();
                     for (i = 0; i < data.length; i++) {
@@ -237,18 +237,7 @@
                         }
                         dataPesananAwal.push(value);
                     }
-                }
-            });
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: '<?= BASE_URL . "Order/getListPesanan" ?>',
-                data: {
-                    nomor_order: '<?= $dataKustomer[0]->nomor_order ?>'
-                },
-                async: true,
-                dataType: 'json',
-                success: function(data) {
+                } else {
                     var html = '';
                     $("#list_pesanan").dataTable().fnClearTable();
                     for (i = 0; i < data.length; i++) {
@@ -289,8 +278,8 @@
                         dataPesananAwal.push(value);
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     function kerjakan(nomor_order, id_produk) {

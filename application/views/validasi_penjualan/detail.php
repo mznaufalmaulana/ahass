@@ -17,6 +17,20 @@
                                 Tanggal Laporan
                                 <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="outlet_detail"><?= TanggalIndonesia($tanggal) ?></span></div>
                             </div>
+                            <div class="card-text" style="margin-bottom: 10px;">
+                                Status Validasi
+                                <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;">
+                                    <span>
+                                        <?php if ($status->status == 3 && $_SESSION['role'] == 'kasir') { ?>
+                                            Sudah Divalidasi
+                                        <?php } else if ($status->status == 4 && $_SESSION['role'] == 'manager') {?>
+                                            Sudah Divalidasi
+                                        <?php } else {?>
+                                            Belum Divalidasi
+                                        <?php } ?>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div id="message"></div>
@@ -36,7 +50,11 @@
                         <div class="col-lg-9"></div>
                         <div class="col-lg-3">
                             <div class="btn float-right" style="width: 100%; margin-bottom: 20px">
-                                <?php if ($status->status != 3) { ?>
+                                <?php if ($status->status != 3 && $_SESSION['role'] == 'kasir') { ?>
+                                    <a href="#" class="btn btn-danger btn-block" id="add-order">
+                                        Validasi Laporan
+                                    </a>
+                                <?php } else if ($status->status != 4 && $_SESSION['role'] == 'manager') { ?>
                                     <a href="#" class="btn btn-danger btn-block" id="add-order">
                                         Validasi Laporan
                                     </a>
@@ -92,9 +110,14 @@
     }
 
     $("#add-order").on('click', function(e) {
+        if ('<?= $this->session->userdata["role"] ?>' == 'kasir') {
+            var url = "Validasi/setValidasiDataLaporan";
+        } else {
+            var url = "Validasi/setValidasiDataLaporanManager";
+        }
         $.ajax({
             type: 'POST',
-            url: '<?= BASE_URL . "Validasi/setValidasiDataLaporan" ?>',
+            url: '<?= BASE_URL ?>' + url,
             data: {
                 tanggal: '<?= $tanggal ?>'
             },
@@ -128,7 +151,6 @@
                     show_data_laporan();
                 }
             }
-
         });
     })
 

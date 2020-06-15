@@ -46,10 +46,10 @@
                           </li>
                       </ul>
                   <?php } ?>
-                  <?php if ($_SESSION['role'] == 'kasir') { ?>
+                  <?php if ($_SESSION['role'] == 'kasir' || $_SESSION['role'] == 'manager') { ?>
                       <ul class="sidebar-menu">
                           <li class="dropdown">
-                              <a href="<?= BASE_URL . 'Validasi' ?>" class="nav-link"><i class="fas fa-check"></i><span>Validasi Penjualan</span></a>
+                              <a href="<?= BASE_URL . 'Validasi' ?>" class="nav-link"><i class="fas fa-check"></i><span>Hasil Penjualan</span></a>
                           </li>
                       </ul>
                   <?php } ?>

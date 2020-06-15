@@ -31,7 +31,7 @@ class Pengguna extends CI_Controller
         $nama_pengguna = $this->input->post('nama_pengguna');
         $role = $this->input->post('role');
 
-        $this->db->select('fullname, username, role');
+        $this->db->select('id, fullname, username, role');
         $this->db->from('user');
 
         if (strlen($nama_pengguna) != 0) {
@@ -40,6 +40,21 @@ class Pengguna extends CI_Controller
         if (strlen($role) != 0) {
             $this->db->where('role', $role);
         }
+
+        $dataPengguna = $this->db->get()->result();
+
+        echo json_encode($dataPengguna);
+    }
+
+    // mengambil daftar pengguna
+    public function getDetailPengguna()
+    {
+        $id = $this->input->post('id');
+
+        $this->db->select('id, fullname, username, role');
+        $this->db->from('user');
+
+        $this->db->where('id', $id);
 
         $dataPengguna = $this->db->get()->result();
 
@@ -73,6 +88,41 @@ class Pengguna extends CI_Controller
         ];
 
         $query = $this->db->insert('user', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // menyimpan data pengguna
+    public function setDataEditPengguna()
+    {
+        $data = [
+            "username" => $this->input->post('username'),
+            "fullname" => $this->input->post('fullname'),
+            "role" => $this->input->post('role')
+        ];
+
+        $this->db->where('id', $this->input->post('id'));
+
+        $query = $this->db->update('user', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // menyimpan data pengguna
+    public function deleteDataPengguna()
+    {
+        $this->db->where('id', $this->input->post('id'));
+        $query = $this->db->delete('user');
         if ($query) {
             $response_array['status'] = 'success';
         } else {
