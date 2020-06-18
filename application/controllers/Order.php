@@ -177,7 +177,7 @@ class Order extends CI_Controller
     // mengambil data pesanan
     public function getListPesanan()
     {
-        $this->db->select('*');
+        $this->db->select('dp.id, p.id as id_produk, p.nama_produk, p.harga, dp.jumlah, dp.nomor_order, dp.tanggal_pembelian, dp.total_harga, dp.status');
         $this->db->from('data_pesanan dp');
         $this->db->join('produk p', 'dp.id_produk = p.id');
         $this->db->where('nomor_order', $this->input->post('nomor_order'));
@@ -187,5 +187,19 @@ class Order extends CI_Controller
         $dataPesanan = $this->db->get()->result();
 
         echo json_encode($dataPesanan);
+    }
+
+    // menyimpan data pengguna
+    public function deleteDataProduk()
+    {
+        $this->db->where('id', $this->input->post('id'));
+        $query = $this->db->delete('data_pesanan');
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
     }
 }

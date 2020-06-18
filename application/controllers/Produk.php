@@ -62,4 +62,53 @@ class Produk extends CI_Controller
 
         echo json_encode($response_array);
     }
+
+    // mengambil daftar pengguna
+    public function getDetailProduk()
+    {
+        $id = $this->input->post('id');
+
+        $this->db->select('*');
+        $this->db->from('produk');
+
+        $this->db->where('id', $id);
+
+        $dataPengguna = $this->db->get()->result();
+
+        echo json_encode($dataPengguna);
+    }
+
+    // menyimpan data pengguna
+    public function setDataEditProduk()
+    {
+        $data = [
+            "nama_produk" => $this->input->post('nama_produk'),
+            "harga" => $this->input->post('harga')
+        ];
+
+        $this->db->where('id', $this->input->post('id'));
+
+        $query = $this->db->update('produk', $data);
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
+
+    // menyimpan data pengguna
+    public function deleteDataProduk()
+    {
+        $this->db->where('id', $this->input->post('id'));
+        $query = $this->db->delete('produk');
+        if ($query) {
+            $response_array['status'] = 'success';
+        } else {
+            $response_array['status'] = 'error';
+        }
+
+        echo json_encode($response_array);
+    }
 }

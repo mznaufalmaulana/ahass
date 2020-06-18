@@ -21,9 +21,7 @@
                                 Status Validasi
                                 <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;">
                                     <span>
-                                        <?php if ($status->status == 3 && $_SESSION['role'] == 'kasir') { ?>
-                                            Sudah Divalidasi
-                                        <?php } else if ($status->status == 4 && $_SESSION['role'] == 'manager') {?>
+                                        <?php if ($status->status == 3) { ?>
                                             Sudah Divalidasi
                                         <?php } else {?>
                                             Belum Divalidasi
@@ -51,10 +49,6 @@
                         <div class="col-lg-3">
                             <div class="btn float-right" style="width: 100%; margin-bottom: 20px">
                                 <?php if ($status->status != 3 && $_SESSION['role'] == 'kasir') { ?>
-                                    <a href="#" class="btn btn-danger btn-block" id="add-order">
-                                        Validasi Laporan
-                                    </a>
-                                <?php } else if ($status->status != 4 && $_SESSION['role'] == 'manager') { ?>
                                     <a href="#" class="btn btn-danger btn-block" id="add-order">
                                         Validasi Laporan
                                     </a>

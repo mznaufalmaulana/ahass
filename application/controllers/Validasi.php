@@ -79,6 +79,7 @@ class Validasi extends CI_Controller
         $this->db->join('produk p', 'dp.id_produk = p.id');
         $this->db->where('tanggal_pembelian', $tanggal);
 
+        $this->db->where('dp.status = 2');
         $this->db->group_by('dp.id_produk');
 
         $dataPenjualan = $this->db->get()->result();
