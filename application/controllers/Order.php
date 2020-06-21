@@ -202,4 +202,20 @@ class Order extends CI_Controller
 
         echo json_encode($response_array);
     }
+    
+    public function getDataPesananSelesai()
+    {
+        $nomor_order = $this->input->post('nomor_order');
+        $this->db->select('nomor_order,
+	                        (SELECT COUNT(status) FROM data_pesanan WHERE nomor_order = "' . $nomor_order . '") AS total_pesanan,
+                            (SELECT COUNT(status) FROM data_pesanan WHERE status = 2 AND nomor_order = "' . $nomor_order . '") AS total_selesai'
+                        );
+        $this->db->from('data_pesanan');
+        $this->db->where('nomor_order', $nomor_order);
+        $this->db->group_by('nomor_order');
+
+        $dataPesanan = $this->db->get()->result();
+
+        echo json_encode($dataPesanan);
+    }
 }

@@ -206,6 +206,7 @@
         $('#list_pesanan_montir_length').hide();
         show_data_pesanan();
         $("p").addClass("mb-0");
+        cekDataPesananSelesai();
     })
 
     function show_data_pesanan() {
@@ -313,6 +314,7 @@
                         dataPesananAwal.push(value);
                     }
                 }
+                cekDataPesananSelesai();
             }
         });
     }
@@ -572,6 +574,27 @@
             $("#alertFadeOut").fadeOut(5000);
         }
     });
+
+    function cekDataPesananSelesai() {
+        var nomor_order = '<?= $dataKustomer[0]->nomor_order ?>';
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL . "Order/getDataPesananSelesai" ?>',
+            data: {
+                nomor_order: nomor_order
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data[0]['total_pesanan'] == data[0]['total_selesai']) {
+                    var value = '';
+                    $("#finish-button").show();
+                } else {
+                    var value = '';
+                    $("#finish-button").hide();
+                }
+            }
+        })
+    }
 
     //# sourceURL=/view/order/detail_order.js
 </script>

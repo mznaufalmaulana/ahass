@@ -79,11 +79,18 @@
                             <th style="width: 25%">Jenis Service</th>
                             <th>Proses</th>
                             <th style="width: 25%">Status</th>
-                            <?php if ($_SESSION['role'] == 'montir') { ?>
-                                <th style="width: 20%"></th>
-                            <?php } ?>
+                            <th>Jumlah</th>
+                            <th>Total harga</th>
                         </tr>
                     </thead>
+                    <tbody syle="font-weight: normal;">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5">Total</th>
+                            <th><span id="totalHarga"></span></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -114,6 +121,7 @@
         var progres;
         var txtProgres;
         var urutan = 1;
+        var total = 0;
         var button;
 
         $.ajax({
@@ -152,12 +160,34 @@
                         urutan++,
                         data[i]['nama_produk'],
                         progres,
-                        txtProgres
+                        txtProgres,
+                        data[i]['jumlah'],
+                        formatRupiah(data[i]['total_harga'], 'Rp'),
                     ]
+                    total += parseInt(data[i]['total_harga']);
                     $("#list_pesanan").dataTable().fnAddData(dataCust);
                 }
+                $("#totalHarga").text(formatRupiah(total.toString(), "Rp"));
             }
         });
+    }
+
+    // Format Rupiah
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
 
     //# sourceURL=/view/order/detail_order.js

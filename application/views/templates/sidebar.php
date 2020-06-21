@@ -46,7 +46,7 @@
                           </li>
                       </ul>
                   <?php } ?>
-                  <?php if ($_SESSION['role'] == 'kasir' || $_SESSION['role'] == 'manager') { ?>
+                  <?php if ($_SESSION['role'] == 'kasir' || $_SESSION['role'] == 'manager'  || $_SESSION['role'] == 'admin') { ?>
                       <ul class="sidebar-menu">
                           <li class="dropdown">
                               <a href="<?= BASE_URL . 'Validasi' ?>" class="nav-link"><i class="fas fa-check"></i><span>Hasil Penjualan</span></a>
