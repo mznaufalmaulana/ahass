@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-lg-9"></div>
                         <div class="col-lg-3">
-                            <div class="btn float-right" style="width: 100%; margin-bottom: 20px">
+                            <div class="btn float-right" style="width: 100%; margin-bottom: 20px;">
                                 <?php if ($_SESSION['role'] == 'montir') { ?>
                                     <a href="#" class="btn btn-danger btn-block" id="finish-button">
                                         Selesai
@@ -67,9 +67,8 @@
                                     <thead syle="font-weight: normal;">
                                         <tr>
                                             <th class="text-center" style="width: 5%">No</th>
-                                            <th style="width: 25%">Jenis Service</th>
-                                            <th>Proses</th>
-                                            <th style="width: 25%">Status</th>
+                                            <th style="width: 15%">Jenis Service</th>
+                                            <th>Status</th>
                                             <?php if ($_SESSION['role'] == 'montir') { ?>
                                                 <th style="width: 20%"></th>
                                             <?php } else { ?>
@@ -232,33 +231,20 @@
                         var id_produk = "'" + data[i]['id_produk'] + "'";
                         var id_pesanan = "'" + data[i]['nomor_order'] + "'";
                         if (data[i]['status'] == 0) {
-                            progres = '<div class="progress" data-height="4" data-toggle="tooltip" title="0%">' +
-                                '<div class="progress-bar bg-danger" role="progressbar" data-width="0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">' +
-                                '</div>' +
-                                '</div>';
-                            txtProgres = '<span class="text-danger">Dalam Antrian</span>';
+                            txtProgres = '<a href="#" class="btn btn-danger btn-block" style=" cursor: context-menu;">Dalam Antrian</a>';
                             button = '<a href="#" class="btn btn-warning" onclick="kerjakan(' + id_pesanan + ',' + id_produk + ')" style="width: 80px">Kerjakan</a>' + '&nbsp;' +
                                 '<a href="#" class="btn btn-success" onclick="selesai(' + id_pesanan + ',' + id_produk + ')" style="width: 80px">Selesai</a>';
                         } else if (data[i]['status'] == 1) {
-                            progres = '<div class="progress" data-height="4" data-toggle="tooltip" title="50%">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" data-width="50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">' +
-                                '</div>' +
-                                '</div>';
-                            txtProgres = '<span class="text-warning">Sedang Dikerjakan</span>';
+                            txtProgres = '<a href="#" class="btn btn-warning btn-block" style=" cursor: context-menu;">Sedang Dikerjakan</a>';
                             button = '<a href="#" class="btn btn-success" onclick="selesai(' + id_pesanan + ',' + id_produk + ')" style="width: 80px">Selesai</a>';
                         } else if (data[i]['status'] == 2) {
-                            progres = '<div class="progress" data-height="4" data-toggle="tooltip" title="100%">' +
-                                '<div class="progress-bar bg-success" role="progressbar" data-width="100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">' +
-                                '</div>' +
-                                '</div>';
-                            txtProgres = '<span class="text-success">Selesai</span>';
+                            txtProgres = '<a href="#" class="btn btn-success btn-block" style=" cursor: context-menu;">Selesai</a>';
                             button = '';
                         }
 
                         var dataCust = [
                             urutan++,
                             data[i]['nama_produk'],
-                            progres,
                             txtProgres,
                             button
                         ]
@@ -277,29 +263,16 @@
                     $("#list_pesanan").dataTable().fnClearTable();
                     for (i = 0; i < data.length; i++) {
                         if (data[i]['status'] == 0) {
-                            progres = '<div class="progress" data-height="4" data-toggle="tooltip" title="0%">' +
-                                '<div class="progress-bar bg-danger" role="progressbar" data-width="0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">' +
-                                '</div>' +
-                                '</div>';
-                            txtProgres = '<span class="text-danger">Dalam Antrian</span>';
+                            txtProgres = '<a href="#" class="btn btn-danger btn-block" style=" cursor: context-menu;">Dalam Antrian</a>';
                         } else if (data[i]['status'] == 1) {
-                            progres = '<div class="progress" data-height="4" data-toggle="tooltip" title="50%">' +
-                                '<div class="progress-bar bg-warning" role="progressbar" data-width="50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">' +
-                                '</div>' +
-                                '</div>';
-                            txtProgres = '<span class="text-warning">Sedang Dikerjakan</span>';
+                            txtProgres = '<a href="#" class="btn btn-warning btn-block" style=" cursor: context-menu;">Sedang Dikerjakan</a>';
                         } else if (data[i]['status'] == 2) {
-                            progres = '<div class="progress" data-height="4" data-toggle="tooltip" title="100%">' +
-                                '<div class="progress-bar bg-success" role="progressbar" data-width="100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">' +
-                                '</div>' +
-                                '</div>';
-                            txtProgres = '<span class="text-success">Selesai</span>';
+                            txtProgres = '<a href="#" class="btn btn-success btn-block" style=" cursor: context-menu;">Selesai</a>';
                         }
 
                         var dataCust = [
                             urutan++,
                             data[i]['nama_produk'],
-                            progres,
                             txtProgres,
                             '<a href="#" onclick="hapusProduk(\''+ data[i]['id'] +'\')" class="btn btn-danger">Hapus</a>'
                         ]
