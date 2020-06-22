@@ -48,7 +48,7 @@
                                     <a href="#" class="btn btn-danger btn-block" id="finish-button">
                                         Selesai
                                     </a>
-                                <?php } else { ?>
+                                <?php } else if ($_SESSION['role'] == 'kasir') { ?>
                                     <a href="#" class="btn btn-danger btn-block" id="add-order">
                                         Tambah Order
                                     </a>
@@ -59,7 +59,7 @@
                     <div id="message"></div>
                     <div>
                         <div class="table-group">
-                            <?php if ($_SESSION['role'] == 'kasir') { ?>
+                            <?php if ($_SESSION['role'] == 'kasir' || $_SESSION['role'] == 'admin') { ?>
                                 <table class="table" id="list_pesanan" style="border-collapse: separate !important; font-size:16px !important; ">
                                 <?php } else { ?>
                                     <table class="table" id="list_pesanan_montir" style="border-collapse: separate !important; font-size:16px !important; ">
