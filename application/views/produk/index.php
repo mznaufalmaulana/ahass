@@ -234,7 +234,6 @@
     $("#tambah-produk").click(function(e) {
         e.preventDefault();
 
-        var id = create_UUID();
         var nama_produk = $('#nama-produk-tambah').val();
         var harga = $('#harga').val();
 
@@ -244,7 +243,6 @@
                 type: "POST",
                 url: '<?= BASE_URL . "Produk/setDataProduk" ?>',
                 data: {
-                    id: id,
                     nama_produk: nama_produk,
                     harga: harga
                 },

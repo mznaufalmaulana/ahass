@@ -40,7 +40,6 @@ class Produk extends CI_Controller
     public function setDataProduk()
     {
         $data = [
-            "id" => $this->input->post('id'),
             "nama_produk" => $this->input->post('nama_produk'),
             "harga" => $this->input->post('harga')
         ];
