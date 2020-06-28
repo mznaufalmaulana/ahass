@@ -9,6 +9,7 @@ class Customer extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->model('M_customer');
     }
 
     public function index()
@@ -19,12 +20,8 @@ class Customer extends CI_Controller
         $user = $this->db->get_where('data_kustomer', ['nomor_order' => $nomor])->row_array();
 
         if ($user != null) {
-
-            $this->db->select('*');
-            $this->db->from('data_kustomer');
-            $this->db->where('nomor_order', $nomor);
-
-            $query = $this->db->get()->result();
+            
+            $query = $this->M_customer->get_data_customer($nomor);
 
             $session = [
                 'id' => $user['nomor_order'],
@@ -35,6 +32,31 @@ class Customer extends CI_Controller
 
             $data['dataKustomer'] = $query;
             $this->load->view('customer/index', $data);
+        } else {
+            $this->load->view('errors/404_error');
+        }
+    }
+
+    public function nota_pembayaran($nomor)
+    {
+        $data['judul'] = "Detail Order";
+
+        $user = $this->db->get_where('data_kustomer', ['nomor_order' => $nomor])->row_array();
+
+        if ($user != null) {
+
+            $query = $this->M_customer->get_data_customer($nomor);
+
+            $data = [
+                "status" => 9,
+            ];
+
+            $this->db->where('nomor_order', $nomor);
+
+            $update = $this->db->update('data_kustomer', $data);
+
+            $data['dataKustomer'] = $query;
+            $this->load->view('customer/nota_pembayaran', $data);
         } else {
             $this->load->view('errors/404_error');
         }

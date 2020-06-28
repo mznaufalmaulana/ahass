@@ -25,8 +25,9 @@
                                     <tr>
                                         <th style="width: 25%">No Order</th>
                                         <th style="width: 15%">Tanggal Order</th>
-                                        <th style="width: 35%">Nama Pelanggan</th>
-                                        <th style="width: 25%"></th>
+                                        <th style="width: 25%">Nama Pelanggan</th>
+                                        <th style="width: 15%">Status Pembayaran</th>
+                                        <th style="width: 20%"></th>
                                     </tr>
                                 </thead>
                                 <tbody syle="font-weight: normal;" id="data_list_customer"></tbody>
@@ -113,6 +114,7 @@
                         data[i]['nomor_order'],
                         tanggalIndonesia(data[i]['tgl_servis']),
                         '<span class="text-capitalize">' + data[i]['nama'] + '</span>',
+                        data[i]['status'] == 1 ? "Belum Bayar" : "Sudah Bayar",
                         '<a href="<?= BASE_URL . "Riwayat/detail/" ?>' + data[i]['nomor_order'] + '" class="btn btn-danger" style="width: 100%;">Detail</a>'
                     ]
                     $("#list_customer").dataTable().fnAddData(dataCust);

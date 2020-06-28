@@ -9,6 +9,7 @@ class Pengguna extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->model('M_user');
 
         if (!isset($_SESSION['id'])) {
             redirect('Auth/');
@@ -31,17 +32,7 @@ class Pengguna extends CI_Controller
         $nama_pengguna = $this->input->post('nama_pengguna');
         $role = $this->input->post('role');
 
-        $this->db->select('id, fullname, username, role');
-        $this->db->from('user');
-
-        if (strlen($nama_pengguna) != 0) {
-            $this->db->like('fullname', $nama_pengguna);
-        }
-        if (strlen($role) != 0) {
-            $this->db->where('role', $role);
-        }
-
-        $dataPengguna = $this->db->get()->result();
+        $dataPengguna = $this->M_user->get_list_user($nama_pengguna, $role);
 
         echo json_encode($dataPengguna);
     }
@@ -51,12 +42,7 @@ class Pengguna extends CI_Controller
     {
         $id = $this->input->post('id');
 
-        $this->db->select('id, fullname, username, role');
-        $this->db->from('user');
-
-        $this->db->where('id', $id);
-
-        $dataPengguna = $this->db->get()->result();
+        $dataPengguna = $this->M_user->get_detail_user($id);
 
         echo json_encode($dataPengguna);
     }

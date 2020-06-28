@@ -48,6 +48,9 @@
                                     <a href="#" class="btn btn-danger btn-block" id="finish-button">
                                         Selesai
                                     </a>
+                                    <a href="#" class="btn btn-danger btn-block" id="kerjakan-button">
+                                        Kerjakan
+                                    </a>
                                 <?php } else if ($_SESSION['role'] == 'kasir') { ?>
                                     <a href="#" class="btn btn-danger btn-block" id="add-order">
                                         Tambah Order
@@ -288,6 +291,7 @@
                     }
                 }
                 cekDataPesananSelesai();
+                cekDikerjakan();
             }
         });
     }
@@ -340,6 +344,22 @@
             dataType: 'json',
             success: function(data) {
                 window.location.href = "<?= BASE_URL . 'order' ?>";
+            }
+        })
+    })
+
+    $("#kerjakan-button").on('click', function(e) {
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL . "Order/setProsesSelesai" ?>',
+            data: {
+                nomor_order: '<?= $dataKustomer[0]->nomor_order ?>',
+                status: 8
+            },
+            async: true,
+            dataType: 'json',
+            success: function(data) {
+                $("#kerjakan-button").hide();
             }
         })
     })
@@ -564,6 +584,25 @@
                 } else {
                     var value = '';
                     $("#finish-button").hide();
+                }
+            }
+        })
+    }
+
+    function cekDikerjakan() {
+        var nomor_order = '<?= $dataKustomer[0]->nomor_order ?>';
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL . "Order/getDataPekerjaan" ?>',
+            data: {
+                nomor_order: nomor_order
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data[0]['status'] == 8) {
+                    $("#kerjakan-button").hide();
+                } else {
+                    $("#kerjakan-button").show();
                 }
             }
         })

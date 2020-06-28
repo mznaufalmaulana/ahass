@@ -9,6 +9,7 @@ class Order extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->model('M_order');
 
         if (!isset($_SESSION['id'])) {
             redirect('Auth/');
@@ -29,11 +30,7 @@ class Order extends CI_Controller
     {
         $data['judul'] = "Detail Order";
 
-        $this->db->select('*');
-        $this->db->from('data_kustomer');
-        $this->db->where('nomor_order', $id);
-
-        $data['dataKustomer'] = $this->db->get()->result();
+        $data['dataKustomer'] = $this->M_order->get_data_customer($id);
 
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
@@ -47,21 +44,8 @@ class Order extends CI_Controller
         $order_no = $this->input->post('order_no');
         $tgl_mulai = $this->input->post('tgl_mulai');
         $tgl_akhir = $this->input->post('tgl_akhir');
-        $this->db->select('*');
-        $this->db->from('data_kustomer');
 
-        if (strlen($order_no) != 0) {
-            $this->db->like('nomor_order', $order_no);
-        }
-        if (strlen($tgl_mulai) != 0) {
-            $this->db->where('tgl_servis >=', $tgl_mulai);
-        }
-        if (strlen($tgl_akhir) != 0) {
-            $this->db->where('tgl_servis <=', $tgl_akhir);
-        }
-        $this->db->where('status', 0);
-
-        $dataKustomer = $this->db->get()->result();
+        $dataKustomer = $this->M_order->get_list_customer($order_no, $tgl_mulai, $tgl_akhir);
 
         echo json_encode($dataKustomer);
     }
@@ -69,12 +53,7 @@ class Order extends CI_Controller
     // mengambil data produk
     public function getDataProduk()
     {
-        $this->db->select('*');
-        $this->db->from('produk');
-
-        $this->db->order_by('nama_produk', 'asc');
-
-        $dataProduk = $this->db->get()->result();
+        $dataProduk = $this->M_order->get_data_produk();
 
         echo json_encode($dataProduk);
     }
@@ -82,11 +61,7 @@ class Order extends CI_Controller
     // mengambil data harga produk
     public function getDataHarga($id)
     {
-        $this->db->select('harga');
-        $this->db->from('produk');
-        $this->db->where('id', $id);
-
-        $dataHarga = $this->db->get()->result();
+        $dataHarga = $this->M_order->get_data_harga($id);
 
         echo json_encode($dataHarga);
     }
@@ -94,19 +69,17 @@ class Order extends CI_Controller
     // menyimpan data pelanggan
     public function setDataKustomer()
     {
-        $data = [
-            'nomor_order' => htmlspecialchars($this->input->post('id', true)),
-            'nama' => htmlspecialchars($this->input->post('cust_name', true)),
-            'telepon' => htmlspecialchars($this->input->post('telepon_no'), true),
-            'nomor_polisi' => htmlspecialchars($this->input->post('plat_no'), true),
-            'total_km' => htmlspecialchars($this->input->post('kilometer'), true),
-            'catatan' => $this->input->post('catatan'),
-            'tgl_servis' => htmlspecialchars($this->input->post('tgl_hari_ini'), true),
-            'status' => 0,
-        ];
+        $id = htmlspecialchars($this->input->post('id', true));
+        $cust_name = htmlspecialchars($this->input->post('cust_name', true));
+        $telepon = htmlspecialchars($this->input->post('telepon_no'), true);
+        $plat_no = htmlspecialchars($this->input->post('plat_no'), true);
+        $kilometer = htmlspecialchars($this->input->post('kilometer'), true);
+        $catatan = $this->input->post('catatan');
+        $tgl_hari_ini = htmlspecialchars($this->input->post('tgl_hari_ini'), true);
+        $status = 0;
 
-        $query = $this->db->insert('data_kustomer', $data);
-        if ($query) {
+        $query = $this->M_order->set_data_customer($id, $cust_name, $telepon, $plat_no, $kilometer, $catatan, $tgl_hri_ini);
+        if ($query == 'success') {
             $response_array['status'] = 'success';
         } else {
             $response_array['status'] = 'error';
@@ -118,17 +91,15 @@ class Order extends CI_Controller
     // menyimpan data pesanan
     public function setDataPesanan()
     {
-        $data = [
-            "nomor_order" => $this->input->post('nomor_order'),
-            "id_produk" => $this->input->post('id_produk'),
-            "jumlah" => $this->input->post('jumlah'),
-            "total_harga" => $this->input->post('total_harga'),
-            "status" => $this->input->post('status'),
-            'tanggal_pembelian' => $this->input->post('tgl_hari_ini')
-        ];
+        $nomor_order = $this->input->post('nomor_order');
+        $id_produk = $this->input->post('id_produk');
+        $jumlah = $this->input->post('jumlah');
+        $total_harga = $this->input->post('total_harga');
+        $status = $this->input->post('status');
+        $tanggal_pembelian = $this->input->post('tgl_hari_ini');
 
-        $query = $this->db->insert('data_pesanan', $data);
-        if ($query) {
+        $query = $this->M_order->set_data_pesanan($nomor_order, $id_produk, $jumlah, $total_harga, $status, $tanggal_pembelian);
+        if ($query == 'success') {
             $response_array['status'] = 'success';
         } else {
             $response_array['status'] = 'error';
@@ -140,14 +111,12 @@ class Order extends CI_Controller
     // update data pesanan
     public function setProses()
     {
-        $data = [
-            "status" => $this->input->post('status'),
-        ];
+        $status = $this->input->post('status');
+        $nomor_order = $this->input->post('nomor_order');
+        $id_produk = $this->input->post('id_produk');
 
-        $this->db->where('nomor_order', $this->input->post('nomor_order'));
-        $this->db->where('id_produk', $this->input->post('id_produk'));
-        $query = $this->db->update('data_pesanan', $data);
-        if ($query) {
+        $query = $this->M_order->set_proses($status, $nomor_order, $id_produk);
+        if ($query == 'success') {
             $response_array['status'] = 'success';
         } else {
             $response_array['status'] = 'error';
@@ -159,13 +128,11 @@ class Order extends CI_Controller
     // update data pesanan
     public function setProsesSelesai()
     {
-        $data = [
-            "status" => $this->input->post('status'),
-        ];
+        $status = $this->input->post('status');
+        $nomor_order = $this->input->post('nomor_order');
 
-        $this->db->where('nomor_order', $this->input->post('nomor_order'));
-        $query = $this->db->update('data_kustomer', $data);
-        if ($query) {
+        $query = $this->M_order->set_proses_selesai($status, $nomor_order);
+        if ($query == 'success') {
             $response_array['status'] = 'success';
         } else {
             $response_array['status'] = 'error';
@@ -177,14 +144,9 @@ class Order extends CI_Controller
     // mengambil data pesanan
     public function getListPesanan()
     {
-        $this->db->select('dp.id, p.id as id_produk, p.nama_produk, p.harga, dp.jumlah, dp.nomor_order, dp.tanggal_pembelian, dp.total_harga, dp.status');
-        $this->db->from('data_pesanan dp');
-        $this->db->join('produk p', 'dp.id_produk = p.id');
-        $this->db->where('nomor_order', $this->input->post('nomor_order'));
+        $nomor_order = $this->input->post('nomor_order');
 
-        $this->db->order_by('nama_produk');
-
-        $dataPesanan = $this->db->get()->result();
+        $dataPesanan = $this->M_order->get_list_pesanan($nomor_order);
 
         echo json_encode($dataPesanan);
     }
@@ -192,9 +154,9 @@ class Order extends CI_Controller
     // menyimpan data pengguna
     public function deleteDataProduk()
     {
-        $this->db->where('id', $this->input->post('id'));
-        $query = $this->db->delete('data_pesanan');
-        if ($query) {
+        $id = $this->input->post('id');
+        $query = $this->M_order->delete_data_produk($id);
+        if ($query == 'success') {
             $response_array['status'] = 'success';
         } else {
             $response_array['status'] = 'error';
@@ -206,13 +168,19 @@ class Order extends CI_Controller
     public function getDataPesananSelesai()
     {
         $nomor_order = $this->input->post('nomor_order');
-        $this->db->select('nomor_order,
-	                        (SELECT COUNT(status) FROM data_pesanan WHERE nomor_order = "' . $nomor_order . '") AS total_pesanan,
-                            (SELECT COUNT(status) FROM data_pesanan WHERE status = 2 AND nomor_order = "' . $nomor_order . '") AS total_selesai'
-                        );
-        $this->db->from('data_pesanan');
+
+        $dataPesanan = $this->M_order->get_data_pesanan_selesai($nomor_order);
+
+        echo json_encode($dataPesanan);
+    }
+
+    public function getDataPekerjaan()
+    {
+        $nomor_order = $this->input->post('nomor_order');
+
+        $this->db->select('status');
+        $this->db->from('data_kustomer');
         $this->db->where('nomor_order', $nomor_order);
-        $this->db->group_by('nomor_order');
 
         $dataPesanan = $this->db->get()->result();
 

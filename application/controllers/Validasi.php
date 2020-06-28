@@ -9,6 +9,7 @@ class Validasi extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->model('M_validasi');
 
         if (!isset($_SESSION['id'])) {
             redirect('Auth/');
@@ -30,20 +31,8 @@ class Validasi extends CI_Controller
     {
         $tgl_mulai = $this->input->post('start_month');
         $tgl_akhir = $this->input->post('end_month');
-        $this->db->select('*');
-        $this->db->from('data_pesanan');
 
-        if (strlen($tgl_mulai) != 0) {
-            $this->db->where('tanggal_pembelian >=', $tgl_mulai);
-        }
-        if (strlen($tgl_akhir) != 0) {
-            $this->db->where('tanggal_pembelian <=', $tgl_akhir);
-        }
-
-        $this->db->order_by('tanggal_pembelian');
-        $this->db->group_by('tanggal_pembelian');
-
-        $dataPenjualan = $this->db->get()->result();
+        $dataPenjualan = $this->M_validasi->get_list_laporan($tgl_mulai, $tgl_akhir);
 
         echo json_encode($dataPenjualan);
     }
@@ -71,18 +60,7 @@ class Validasi extends CI_Controller
     {
         $tanggal = $this->input->post('tanggal');
 
-        $this->db->select('
-                        p.nama_produk AS nama_produk,
-                        (SELECT SUM(jumlah) from data_pesanan dp where dp.tanggal_pembelian = "' . $tanggal . '" AND dp.id_produk = p.id) AS total
-                        ');
-        $this->db->from('data_pesanan dp');
-        $this->db->join('produk p', 'dp.id_produk = p.id');
-        $this->db->where('tanggal_pembelian', $tanggal);
-
-        $this->db->where('dp.status = 2');
-        $this->db->group_by('dp.id_produk');
-
-        $dataPenjualan = $this->db->get()->result();
+        $dataPenjualan = $this->M_validasi->get_list_data_laporan($tanggal);
 
         echo json_encode($dataPenjualan);
     }

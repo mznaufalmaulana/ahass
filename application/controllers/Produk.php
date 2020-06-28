@@ -9,6 +9,7 @@ class Produk extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->model('M_produk');
 
         if (!isset($_SESSION['id'])) {
             redirect('Auth/');
@@ -30,16 +31,7 @@ class Produk extends CI_Controller
     {
         $nama_produk = $this->input->post('nama_produk');
 
-        $this->db->select('*');
-        $this->db->from('produk');
-
-        if (strlen($nama_produk) != 0) {
-            $this->db->like('nama_produk', $nama_produk);
-        }
-
-        $this->db->order_by('nama_produk');
-
-        $dataProduk = $this->db->get()->result();
+        $dataProduk = $this->M_produk->get_data_produk($nama_produk);
 
         echo json_encode($dataProduk);
     }
@@ -68,14 +60,9 @@ class Produk extends CI_Controller
     {
         $id = $this->input->post('id');
 
-        $this->db->select('*');
-        $this->db->from('produk');
+        $dataProduk = $this->M_produk->get_detail_produk($id);
 
-        $this->db->where('id', $id);
-
-        $dataPengguna = $this->db->get()->result();
-
-        echo json_encode($dataPengguna);
+        echo json_encode($dataProduk);
     }
 
     // menyimpan data pengguna

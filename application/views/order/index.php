@@ -33,6 +33,7 @@
                                         <th style="width: 25%">No Order</th>
                                         <th style="width: 15%">Tanggal Order</th>
                                         <th style="width: 35%">Nama Pelanggan</th>
+                                        <th style="width: 35%">Status</th>
                                         <th style="width: 25%"></th>
                                     </tr>
                                 </thead>
@@ -231,6 +232,7 @@
                         data[i]['nomor_order'],
                         tanggalIndonesia(data[i]['tgl_servis']),
                         '<span class="text-capitalize">' + data[i]['nama'] + '</span>',
+                        data[i]['status'] == 8 ? "Sedang Dikerjakan" : "Dalam Antrian",
                         '<a href="<?= BASE_URL . "Order/detail/" ?>' + data[i]['nomor_order'] + '" class="btn btn-danger" style="width: 100%;">Detail</a>'
                     ]
                     $("#list_customer").dataTable().fnAddData(dataCust);

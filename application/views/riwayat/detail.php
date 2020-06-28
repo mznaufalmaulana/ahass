@@ -43,13 +43,20 @@
                     <div class="row">
                         <div class="col-lg-9"></div>
                         <div class="col-lg-3">
-                            <?php if ($_SESSION['role'] == 'admin') { ?>
-                                <div class="btn float-right" style="width: 100%; margin-bottom: 20px">
+                            <?php //if ($_SESSION['role'] == 'admin') { ?>
+                                <!-- <div class="btn float-right" style="width: 100%; margin-bottom: 20px">
                                     <a href="<?= BASE_URL . 'riwayat' ?>" class="btn btn-danger btn-block" id="finish-button">
                                         Kembali
                                     </a>
+                                </div> -->
+                            <?php // } ?>
+                            <?php //if ($_SESSION['role'] == 'admin') { ?>
+                                <div class="btn float-right" style="width: 100%; margin-bottom: 20px">
+                                    <a href="<?= BASE_URL . 'customer/nota_pembayaran/' . $dataKustomer[0]->nomor_order ?>" target="_blank" class="btn btn-danger btn-block" id="finish-button">
+                                        Cetak Nota Pembayaran
+                                    </a>
                                 </div>
-                            <?php } ?>
+                            <?php // } ?>
                         </div>
                     </div>
                     <div>

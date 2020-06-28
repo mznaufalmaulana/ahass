@@ -9,6 +9,7 @@ class Riwayat extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->model('M_order');
 
         if (!isset($_SESSION['id'])) {
             redirect('Auth/');
@@ -31,21 +32,8 @@ class Riwayat extends CI_Controller
         $order_no = $this->input->post('order_no');
         $tgl_mulai = $this->input->post('tgl_mulai');
         $tgl_akhir = $this->input->post('tgl_akhir');
-        $this->db->select('*');
-        $this->db->from('data_kustomer');
 
-        if (strlen($order_no) != 0) {
-            $this->db->like('nomor_order', $order_no);
-        }
-        if (strlen($tgl_mulai) != 0) {
-            $this->db->where('tgl_servis >=', $tgl_mulai);
-        }
-        if (strlen($tgl_akhir) != 0) {
-            $this->db->where('tgl_servis <=', $tgl_akhir);
-        }
-        $this->db->where('status', 1);
-
-        $dataKustomer = $this->db->get()->result();
+        $dataKustomer = $this->M_order->get_list_riwayat_customer($order_no, $tgl_mulai, $tgl_akhir);
 
         echo json_encode($dataKustomer);
     }
@@ -54,11 +42,7 @@ class Riwayat extends CI_Controller
     {
         $data['judul'] = "Detail Order";
 
-        $this->db->select('*');
-        $this->db->from('data_kustomer');
-        $this->db->where('nomor_order', $id);
-
-        $data['dataKustomer'] = $this->db->get()->result();
+        $data['dataKustomer'] = $this->M_order->get_data_customer($id);
 
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
