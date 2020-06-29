@@ -78,7 +78,7 @@ class M_order extends CI_Model {
         return $dataHarga;
     }
 
-    public function set_data_customer($id, $cust_name, $telepon, $plat_no, $kilometer, $catatan, $tgl_hri_ini)
+    public function set_data_customer($id, $cust_name, $telepon, $plat_no, $kilometer, $catatan, $tgl_hari_ini)
     {
         $data = [
             'nomor_order' => $id,
@@ -87,7 +87,7 @@ class M_order extends CI_Model {
             'nomor_polisi' => $plat_no,
             'total_km' => $kilometer,
             'catatan' => $catatan,
-            'tgl_servis' => $tgl_hri_ini,
+            'tgl_servis' => $tgl_hari_ini,
             'status' => 0,
         ];
 

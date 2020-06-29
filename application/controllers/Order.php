@@ -78,7 +78,7 @@ class Order extends CI_Controller
         $tgl_hari_ini = htmlspecialchars($this->input->post('tgl_hari_ini'), true);
         $status = 0;
 
-        $query = $this->M_order->set_data_customer($id, $cust_name, $telepon, $plat_no, $kilometer, $catatan, $tgl_hri_ini);
+        $query = $this->M_order->set_data_customer($id, $cust_name, $telepon, $plat_no, $kilometer, $catatan, $tgl_hari_ini);
         if ($query == 'success') {
             $response_array['status'] = 'success';
         } else {
