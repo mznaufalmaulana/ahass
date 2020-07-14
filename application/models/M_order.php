@@ -49,6 +49,7 @@ class M_order extends CI_Model {
             $this->db->where('tgl_servis <=', $tgl_akhir);
         }
         $this->db->where('status != ', 0);
+        $this->db->where('status != ', 8);
 
         $dataKustomer = $this->db->get()->result();
 
