@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 28 Jun 2020 pada 14.53
+-- Waktu pembuatan: 19 Agu 2020 pada 09.02
 -- Versi server: 10.1.19-MariaDB
 -- Versi PHP: 5.6.28
 
@@ -37,16 +37,18 @@ CREATE TABLE `data_kustomer` (
   `total_km` int(11) NOT NULL,
   `catatan` text NOT NULL,
   `tgl_servis` date NOT NULL,
-  `status` tinyint(4) NOT NULL
+  `status` tinyint(4) NOT NULL,
+  `nama_montir` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `data_kustomer`
 --
 
-INSERT INTO `data_kustomer` (`id`, `nomor_order`, `nama`, `telepon`, `nomor_polisi`, `total_km`, `catatan`, `tgl_servis`, `status`) VALUES
-(13, 'ORD2020512201447', 'Anjasmara', 2147483647, 'N 3321 UK', 83203, '<p>1. Tolong benahi rantai</p>\r\n<p>2. Kampas di cek</p>\r\n<p>3. stang oleng</p>', '2020-05-12', 9),
-(14, 'ORD202051820103', 'Mat Bayan', 291834344, 'n 2131 hi', 123212, '<p>Tidak Ada</p>', '2020-05-18', 8);
+INSERT INTO `data_kustomer` (`id`, `nomor_order`, `nama`, `telepon`, `nomor_polisi`, `total_km`, `catatan`, `tgl_servis`, `status`, `nama_montir`) VALUES
+(13, 'ORD2020512201447', 'Anjasmara', 2147483647, 'N 3321 UK', 83203, '<p>1. Tolong benahi rantai</p>\r\n<p>2. Kampas di cek</p>\r\n<p>3. stang oleng</p>', '2020-05-12', 9, ''),
+(14, 'ORD202051820103', 'Mat Bayan', 291834344, 'n 2131 hi', 123212, '<p>Tidak Ada</p>', '2020-05-18', 8, ''),
+(15, 'ORD202062991530', 'Joko', 1234, 'S 123 WW', 12312, '<p>Tidak Ada</p>', '2020-06-29', 8, 'Montir');
 
 -- --------------------------------------------------------
 
@@ -74,7 +76,9 @@ INSERT INTO `data_pesanan` (`id`, `nomor_order`, `id_produk`, `jumlah`, `total_h
 (5, 'ORD2020512201447', 3, 1, 15000, 1, '2020-05-12'),
 (6, 'ORD2020512201447', 1, 1, 10000, 1, '2020-05-12'),
 (8, 'ORD202051820103', 2, 3, 60000, 2, '2020-05-18'),
-(10, 'ORD202051820103', 1, 1, 20000, 2, '2020-06-15');
+(10, 'ORD202051820103', 1, 1, 20000, 2, '2020-06-15'),
+(11, 'ORD202062991530', 3, 1, 15000, 0, '2020-06-29'),
+(12, 'ORD202062991530', 1, 1, 10000, 0, '2020-06-29');
 
 -- --------------------------------------------------------
 
@@ -163,13 +167,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `data_kustomer`
 --
 ALTER TABLE `data_kustomer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_pesanan`
 --
 ALTER TABLE `data_pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `produk`
@@ -181,7 +185,7 @@ ALTER TABLE `produk`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

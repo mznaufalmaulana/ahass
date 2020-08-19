@@ -1,6 +1,7 @@
-<?php 
+<?php
 
-class M_order extends CI_Model {
+class M_order extends CI_Model
+{
     public function get_data_customer($id)
     {
         $this->db->select('*');
@@ -141,9 +142,10 @@ class M_order extends CI_Model {
         return $response_array;
     }
 
-    public function set_proses_selesai($status, $nomor_order)
+    public function set_proses_selesai($status, $nomor_order, $nama_montir)
     {
         $data = [
+            "nama_montir" => $nama_montir,
             "status" => $status,
         ];
 
@@ -189,8 +191,7 @@ class M_order extends CI_Model {
     {
         $this->db->select('nomor_order,
 	                        (SELECT COUNT(status) FROM data_pesanan WHERE nomor_order = "' . $nomor_order . '") AS total_pesanan,
-                            (SELECT COUNT(status) FROM data_pesanan WHERE status = 2 AND nomor_order = "' . $nomor_order . '") AS total_selesai'
-                        );
+                            (SELECT COUNT(status) FROM data_pesanan WHERE status = 2 AND nomor_order = "' . $nomor_order . '") AS total_selesai');
         $this->db->from('data_pesanan');
         $this->db->where('nomor_order', $nomor_order);
         $this->db->group_by('nomor_order');

@@ -130,8 +130,9 @@ class Order extends CI_Controller
     {
         $status = $this->input->post('status');
         $nomor_order = $this->input->post('nomor_order');
+        $nama_montir = $this->input->post('nama_montir');
 
-        $query = $this->M_order->set_proses_selesai($status, $nomor_order);
+        $query = $this->M_order->set_proses_selesai($status, $nomor_order, $nama_montir);
         if ($query == 'success') {
             $response_array['status'] = 'success';
         } else {
@@ -164,7 +165,7 @@ class Order extends CI_Controller
 
         echo json_encode($response_array);
     }
-    
+
     public function getDataPesananSelesai()
     {
         $nomor_order = $this->input->post('nomor_order');
