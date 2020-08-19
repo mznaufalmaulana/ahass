@@ -59,6 +59,10 @@
                     Kilometer
                     <div class="float-right" style="font-weight: bold; display: inline-block; float: right;"><span id="username_detail"><?= ribuan($dataKustomer[0]->total_km) ?> Km</span></div>
                 </div>
+                <div class="card-text" style="margin-bottom: 10px;">
+                    Nama Montir
+                    <div class="float-right" style="color: #666666; font-weight: bold; display: inline-block;"><span id="username_detail"><?= $dataKustomer[0]->nama_montir ?> </span></div>
+                </div>
             </div>
             <div class="col-lg-6">
                 <div class="card-text" style="margin-bottom: 10px;">
