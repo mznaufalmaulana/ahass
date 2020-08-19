@@ -23,7 +23,7 @@
                                     <span>
                                         <?php if ($status->status == 3) { ?>
                                             Sudah Divalidasi
-                                        <?php } else {?>
+                                        <?php } else { ?>
                                             Belum Divalidasi
                                         <?php } ?>
                                     </span>
@@ -37,10 +37,17 @@
                             <table class="table" id="list_laporan" style="border-collapse: separate !important; font-size:16px !important; ">
                                 <thead syle="font-weight: normal;">
                                     <tr>
-                                        <th style="width: 75%">Nama Produk</th>
+                                        <th style="width: 50%">Nama Produk</th>
                                         <th style="width: 25%">Total Pembelian</th>
+                                        <th style="width: 25%">Total Pemasukan</th>
                                     </tr>
                                 </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2">Total</th>
+                                        <th><span id="totalHarga"></span></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -90,14 +97,18 @@
             dataType: 'json',
             success: function(data) {
                 var html = '';
+                var total = 0;
                 $("#list_laporan").dataTable().fnClearTable();
                 for (i = 0; i < data.length; i++) {
                     var dataCust = [
                         data[i]['nama_produk'],
-                        data[i]['total']
+                        data[i]['total'],
+                        formatRupiah(data[i]['total_pemasukan'], "Rp")
                     ]
+                    total += parseInt(data[i]['total_pemasukan']);
                     $("#list_laporan").dataTable().fnAddData(dataCust);
                 }
+                $("#totalHarga").text(formatRupiah(total.toString(), "Rp"));
             }
 
         });

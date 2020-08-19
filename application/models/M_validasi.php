@@ -1,6 +1,7 @@
-<?php 
+<?php
 
-class M_validasi extends CI_Model {
+class M_validasi extends CI_Model
+{
     public function get_list_laporan($tgl_mulai, $tgl_akhir)
     {
         $this->db->select('*');
@@ -26,7 +27,8 @@ class M_validasi extends CI_Model {
     {
         $this->db->select('
                         p.nama_produk AS nama_produk,
-                        (SELECT SUM(jumlah) from data_pesanan dp where dp.tanggal_pembelian = "' . $tanggal . '" AND dp.id_produk = p.id) AS total
+                        (SELECT SUM(jumlah) from data_pesanan dp where dp.tanggal_pembelian = "' . $tanggal . '" AND dp.id_produk = p.id) AS total,
+                        (select ifnull(sum(dp.total_harga),0) from data_pesanan dp where dp.id_produk = p.id AND dp.status = 2 AND dp.tanggal_pembelian = "' . $tanggal . '" group by dp.id_produk) AS total_pemasukan
                         ');
         $this->db->from('data_pesanan dp');
         $this->db->join('produk p', 'dp.id_produk = p.id');
